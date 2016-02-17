@@ -1,4 +1,5 @@
 var express = require('express');
+var ms = require('time-ago')();
 var router = express.Router();
 var ctx = require('../lib/ctxapi');
 var callback_url = 'http://127.0.0.1:3000'
@@ -33,6 +34,7 @@ router.get('/users/:id', function(req, res, next) {
 	    		msg.from.name = msg.addresses.from.name;
 	    		msg.from.email = msg.addresses.from.email;
 	    		msg.from.avatar = msg.person_info[msg.from.email].thumbnail;
+	    		msg.date = ms.ago(new Date(+msg.date * 1000));
 	    		return msg;
 	    	})
 	    res.render('console', {messages: messages, title: 'console'});
