@@ -1,0 +1,94 @@
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+    <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+    </div>
+    <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+      <h3>Email Parser Demo</h3>
+    </div>
+    <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+    </div>
+
+  </header>
+  <main class="mdl-layout__content">
+    <div class="mdl-grid">
+
+      <div class="mdl-cell mdl-cell--5-col">
+        <ul class="demo-list-three js-list mdl-list">
+          {{#each messages}}
+          <li class="mdl-list__item mdl-list__item--three-line">
+            <span class="mdl-list__item-primary-content">
+              <img class="mdl-list__item-avatar" src="{{from.avatar}}">
+              <span>{{from.name}}</span>
+              <small>{{from.email}}</small>
+              <span class="mdl-list__item-text-body">
+                {{subject}}
+              </span>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+              <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons" data-id="{{message_id}}">check_circle</i></a>
+            </span>
+          </li>
+          {{/each}}
+        </ul>
+
+      </div>
+
+
+
+
+
+
+
+
+
+      <div class="mdl-cell mdl-cell--4-col js-message">
+
+      <span class="js-"> Click on a message to view it's content </span>
+
+      </div>
+
+      <div class="mdl-cell mdl-cell--3-col">4</div>
+
+    </div>
+  </main>
+</div>
+<script src="/jquery-2.2.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+
+    $('.js-list').click(function (event) {
+      event.preventDefault();
+
+      var target = $(event.target);
+
+      if(target.is('i')) {
+        var userid = location.pathname.split('/')[2];
+        var url = '/users/'+userid+'/messages/'+ target[0].dataset.id;
+        showLoader('.js-message');
+        $.get(url, function (response) {
+          $('.js-message')
+            .html(processMsgResponse(response));
+        });
+      }
+    });
+
+    function processMsgResponse(response) {
+      return response.body
+        .map(function (section) {
+          if(section.type === 'text/html')
+            return section.content
+
+          return '';
+        })
+        .join(' ');
+    }
+
+    function showLoader(className) {
+      var loader = document.createElement('div');
+      loader.className = 'mdl-progress mdl-js-progress mdl-progress__indeterminate';
+      componentHandler.upgradeElement(loader);
+      $(className).html(loader);
+    }
+
+  });
+</script>

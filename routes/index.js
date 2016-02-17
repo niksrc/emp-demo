@@ -39,4 +39,16 @@ router.get('/users/:id', function(req, res, next) {
 	});
 });
 
+router.get('/users/:id/messages/:msgid', function(req, res, next) {
+	var userid = req.params.id;
+	var msgid = req.params.msgid;
+	var options = req.query;
+
+	ctx.accounts(userid).messages(msgid).body({type: 'text/html'}).get(function (err, response) {
+		if(err)
+			throw err;
+    res.send(response);
+	});
+});
+
 module.exports = router;
