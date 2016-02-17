@@ -10,9 +10,15 @@
 
   </header>
   <main class="mdl-layout__content">
+    <form action="#">
+      <div class="mdl-textfield mdl-js-textfield" style="width:100%;">
+        <input class="mdl-textfield__input" type="text" id="options">
+        <label class="mdl-textfield__label" for="sample1">Filter:</label>
+      </div>
+    </form>
     <div class="mdl-grid">
 
-      <div class="mdl-cell mdl-cell--5-col">
+      <div class="mdl-cell mdl-cell--7-col">
         <ul class="demo-list-three js-list mdl-list">
           {{#each messages}}
           <li class="mdl-list__item mdl-list__item--three-line">
@@ -42,13 +48,11 @@
 
 
 
-      <div class="mdl-cell mdl-cell--4-col js-message">
+      <div class="mdl-cell mdl-cell--5-col js-message">
 
       <span class="js-"> Click on a message to view it's content </span>
 
       </div>
-
-      <div class="mdl-cell mdl-cell--3-col">4</div>
 
     </div>
   </main>
