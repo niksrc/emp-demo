@@ -20,4 +20,23 @@ router.get('/users/new', function(req, res, next) {
 	});
 });
 
+router.get('/users/:id', function(req, res, next) {
+	var userid = req.params.id;
+	var options = req.query;
+
+	ctx.accounts(userid).messages().get({callback_url:callback_url}, function (err, response) {
+	    var messages = [];
+	    if (err) throw err;
+	    messages = response.body
+	    	.map(function (msg) {
+	    		msg.from = {};
+	    		msg.from.name = msg.addresses.from.name;
+	    		msg.from.email = msg.addresses.from.email;
+	    		msg.from.avatar = msg.person_info[msg.from.email].thumbnail;
+	    		return msg;
+	    	})
+	    res.render('console', {messages: messages, title: 'console'});
+	});
+});
+
 module.exports = router;
