@@ -1,9 +1,22 @@
 var express = require('express');
 var router = express.Router();
+var ctx = require('../lib/ctxapi');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+	ctx.accounts().get({limit:15}, function (err, response) {
+	    if (err) throw err;
+  		console.log(JSON.stringify(response.body));
+  		res.render('index', { users: response.body, title: 'EMP demo' });
+	});
+});
+
+router.get('/users/new', function(req, res, next) {
+	ctx.connectTokens().post({callback_url:req.baseUrl}, function (err, response) {
+	    if (err) throw err;
+	    console.log(response);
+	    res.redirect(response.body.browser_redirect_url);
+	});
 });
 
 module.exports = router;
