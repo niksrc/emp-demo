@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var ctx = require('../lib/ctxapi');
+var callback_url = 'http://127.0.0.1:3000'
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,7 +13,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/users/new', function(req, res, next) {
-	ctx.connectTokens().post({callback_url:req.baseUrl}, function (err, response) {
+	ctx.connectTokens().post({callback_url:callback_url}, function (err, response) {
 	    if (err) throw err;
 	    console.log(response);
 	    res.redirect(response.body.browser_redirect_url);
