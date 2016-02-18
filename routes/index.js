@@ -24,8 +24,7 @@ router.get('/users/new', function(req, res, next) {
 router.get('/users/:id', function(req, res, next) {
 	var userid = req.params.id;
 	var options = req.query;
-
-	ctx.accounts(userid).messages().get({callback_url:callback_url}, function (err, response) {
+	ctx.accounts(userid).messages().get(options, function (err, response) {
 	    var messages = [];
 	    if (err) throw err;
 	    messages = response.body
