@@ -52,4 +52,23 @@ router.get('/users/:id/messages/:msgid', function(req, res, next) {
 	});
 });
 
+router.get('/users/:id/messages/', function(req, res, next) {
+	var userid = req.params.id;
+	var options = req.query;
+	ctx.accounts(userid).messages().get(options, function (err, response) {
+	    var messages = [];
+	    if (err) throw err;
+	    messages = response.body
+	    	.map(function (msg) {
+	    		msg.from = {};
+	    		msg.from.name = msg.addresses.from.name;
+	    		msg.from.email = msg.addresses.from.email;
+	    		msg.from.avatar = msg.person_info[msg.from.email].thumbnail;
+	    		msg.date = ms.ago(new Date(+msg.date * 1000));
+	    		return msg;
+	    	})
+	    res.send(messages);
+	});
+});
+
 module.exports = router;

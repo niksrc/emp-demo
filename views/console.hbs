@@ -17,7 +17,7 @@
       </div>
     </form>
     <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--7-col">
+      <div class="mdl-cell mdl-cell--7-col js-list">
         <ul class="demo-list-three js-list mdl-list">
           {{#each messages}}
           <li class="mdl-list__item mdl-list__item--three-line">
@@ -80,6 +80,28 @@
       }
     });
 
+    $('form').submit(function (event) {
+      event.preventDefault();
+      var userid = location.pathname.split('/')[2];
+      var url = '/users/'+userid+'/messages/';
+      var params = $('input').val();
+
+      try {
+        params = JSON.parse(params);
+      } catch(err) {
+        alert('Invalid JSON');
+        return;
+      }
+
+      showLoader('.js-list');
+
+      $.get(url, params,function (response) {
+        $('.js-list')
+          .html(processMsgListResponse(response));
+      });
+
+    })
+
     function processMsgResponse(response) {
       return response.body
         .map(function (section) {
@@ -89,6 +111,31 @@
           return '';
         })
         .join(' ');
+    }
+
+    function processMsgListResponse(response) {
+      var str = '';
+      str += '<ul class="demo-list-three js-list mdl-list">';
+      response.forEach(function (message) {
+        str += '<li class="mdl-list__item mdl-list__item--three-line">';
+        str += '<span class="mdl-list__item-primary-content">'
+        str += '<img class="mdl-list__item-avatar" src="'+message.from.avatar+'">'
+        str += '<span>'+message.from.name+'</span>';
+        str += '<small>'+message.from.email+'</small>';
+        str += '<small style="margin-left:5px; font-style:italic">';
+        str += message.date +'</small>';
+        str += '<span class="mdl-list__item-text-body">';
+        str +=  message.subject;
+        str +=  '</span></span>';
+        str += '<span class="mdl-list__item-secondary-content">'
+        str += '<a class="mdl-list__item-secondary-action" href="#">';
+        str += '<i class="material-icons" data-id="'+ message.message_id +'">';
+        str += 'check_circle</i></a>';
+        str += '</span></li>';
+      })
+
+      str += '</ul>';
+      return str;
     }
 
     function showLoader(className) {
