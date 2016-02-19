@@ -236,3 +236,8 @@ html, body {
 .mdl-demo .mdl-menu__container {
   z-index: 99;
 }
+
+.panel-help {
+  margin-top: 30px;
+  text-align: center;
+}
