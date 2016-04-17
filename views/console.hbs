@@ -16,12 +16,9 @@
         <label class="mdl-textfield__label" for="sample1">Filter:</label>
       </div>
     </form>
+
     <div class="mdl-grid">
-    <code class="prettyprint lang-js linenums js-result">
-    </code>
-    </div>
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--7-col js-list">
+      <div class="mdl-cell mdl-cell--5-col js-list">
         <ul class="demo-list-three js-list mdl-list">
           {{#each messages}}
           <li class="mdl-list__item mdl-list__item--three-line">
@@ -51,10 +48,15 @@
 
 
 
-      <div class="mdl-cell mdl-cell--5-col js-message">
+      <div class="mdl-cell mdl-cell--3-col js-message">
 
       <span class="panel-help"> Click on a message to view it's content </span>
 
+      </div>
+
+      <div class="mdl-cell mdl-cell--4-col">
+        <code class="js-result">
+        </code>
       </div>
 
       <button class="js-process mdl-js-ripple-effect mdl-button mdl-js-button mdl-button--fab mdl-button--colored" style="position:fixed; bottom:20px; right:20px;">
@@ -65,7 +67,7 @@
   </main>
 </div>
 <script src="/jquery-2.2.0.min.js"></script>
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<script type="text/javascript" src="https://rawgithub.com/yesmeck/jquery-jsonview/master/dist/jquery.jsonview.js"></script>
 <script>
   $(document).ready(function () {
 
@@ -74,26 +76,29 @@
 
       var target = $(event.target);
 
+      $('.js-result').html('');
       if(target.is('i')) {
         var userid = location.pathname.split('/')[2];
         var url = '/users/'+userid+'/messages/'+ target[0].dataset.id;
+
         showLoader('.js-message');
+
         $.get(url, function (response) {
-          $('.js-message')
-            .html(processMsgResponse(response));
+          $('.js-message').html('<iframe style="height:100%;position:absolute;"></iframe>');
+          $("iframe").contents().find('html').html(processMsgResponse(response));
+          // $('.js-message').html(processMsgResponse(response));
         });
       }
     });
 
+
     $('.js-process').click(function (event) {
       event.preventDefault();
-      var data = $('.js-message').text();
-
+      var data = $("iframe").contents().find('html').text();
       showLoader('.js-result');
-
-      $.post('/api/process', data, function (response) {
+      $.post('/api/process', {'email': data}, function (response) {
         $('.js-result')
-          .text(JSON.stringify(response));
+          .JSONView(response, {nl2br: true});
       });
     });
 

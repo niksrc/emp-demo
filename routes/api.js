@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* Process emails. */
 router.post('/process', function(req, res, next) {
-  var result = emp.process(JSON.stringify(req.body));
+  var result = emp.process(req.body.email);
   res.send(result);
 });
 
