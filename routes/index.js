@@ -8,7 +8,6 @@ var callback_url = 'http://127.0.0.1:3000'
 router.get('/', function(req, res, next) {
 	ctx.accounts().get({limit:15}, function (err, response) {
 	    if (err) throw err;
-  		console.log(JSON.stringify(response.body));
   		res.render('index', { users: response.body, title: 'EMP demo' });
 	});
 });
@@ -68,6 +67,13 @@ router.get('/users/:id/messages/', function(req, res, next) {
 	    		return msg;
 	    	})
 	    res.send(messages);
+	});
+});
+
+router.get('/app', function(req, res, next) {
+	ctx.accounts().get({limit:15}, function (err, response) {
+	  if (err) throw err;
+		res.render('app', { users: response.body, title: 'Expense App' });
 	});
 });
 
