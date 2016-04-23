@@ -9,6 +9,6 @@ payment confirmation
 payment
 bank transaction
 deals buy
-offer
+offers
 discount
 promo code
