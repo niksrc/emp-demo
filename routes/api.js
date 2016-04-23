@@ -2,6 +2,7 @@ var express = require('express');
 var emp = require('../lib/emp');
 var router = express.Router();
 var ctx = require('../lib/ctxapi');
+var emailtext = require('../lib/emailtext');
 
 /* Process emails. */
 router.post('/process', function(req, res, next) {
@@ -11,7 +12,8 @@ router.post('/process', function(req, res, next) {
 		ctx.accounts(userid).messages(msgid).body().get(function (err, response) {
 			if(err)
 				throw err;
-			res.send(response);
+			var resp = emailtext(response);
+			res.send(resp);
 		});
 });
 
