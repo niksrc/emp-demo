@@ -9,11 +9,14 @@ router.post('/process', function(req, res, next) {
   	var userid = req.body.userid;
   	var msgid = req.body.msgid;
 
-		ctx.accounts(userid).messages(msgid).body().get(function (err, response) {
+		ctx.accounts(userid).messages(msgid).get({include_body: 1}, function (err, response) {
 			if(err)
 				throw err;
-			var resp = emailtext(response);
-			res.send(resp);
+
+			var text = emailtext(response.body);
+			emp.process(email, text.join(), function(result) {
+				res.send(result);
+			})
 		});
 });
 
