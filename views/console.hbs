@@ -80,11 +80,12 @@
       if(target.is('i')) {
         var userid = location.pathname.split('/')[2];
         var url = '/users/'+userid+'/messages/'+ target[0].dataset.id;
+        var msgid = target[0].dataset.id;
 
         showLoader('.js-message');
 
         $.get(url, function (response) {
-          $('.js-message').html('<iframe style="height:100%;position:absolute;"></iframe>');
+          $('.js-message').html('<input type="hidden" value="'+msgid+'" class="msgid"><iframe style="height:100%;position:absolute;"></iframe>');
           $("iframe").contents().find('html').html(processMsgResponse(response));
           // $('.js-message').html(processMsgResponse(response));
         });
@@ -94,9 +95,10 @@
 
     $('.js-process').click(function (event) {
       event.preventDefault();
-      var data = $("iframe").contents().find('html').text();
+      var userid = location.pathname.split('/')[2];
+      var msgid = $('.msgid').val()
       showLoader('.js-result');
-      $.post('/api/process', {'email': data}, function (response) {
+      $.post('/api/process', {'userid': userid, 'msgid': msgid}, function (response) {
         $('.js-result')
           .JSONView(response, {nl2br: true});
       });
