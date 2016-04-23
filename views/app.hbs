@@ -1,0 +1,45 @@
+<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/cs-select.css" />
+		<link rel="stylesheet" type="text/css" href="css/cs-skin-elastic.css" />
+
+<div class="color-3">
+		<div class="container">
+			<!-- Top Navigation -->
+			<header class="codrops-header">
+				<h1><span>A demo</span>Expense App</h1>
+			</header>
+			<section>
+				<select class="cs-select cs-skin-elastic">
+					<option value="" disabled selected>Select an Email</option>
+					{{#each users}}
+					<option value="{{email_addresses}}" data-class="flag-india">{{first_name}} {{last_name}}</option>
+					{{/each}}
+				</select>
+			</section>
+			<section>
+				<select class="cs-select cs-skin-elastic">
+					<option value="" disabled selected>Select a Month</option>
+					<option value="Fed" data-class="flag-india"> February </option>
+					<option value="Mar" data-class="flag-india"> March </option>
+					<option value="April" data-class="flag-india"> April </option>
+					<option value="May" data-class="flag-india"> May </option>
+					<option value="Jun" data-class="flag-india"> June </option>
+				</select>
+			</section>
+
+			<section>
+				<h2 class="expense">  &#x20B9; 75000</h2>
+			</section>
+		</div><!-- /container -->
+		<script src="js/classie.js"></script>
+		<script src="js/selectFx.js"></script>
+		<script>
+			(function() {
+				[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
+					new SelectFx(el);
+				} );
+			})();
+		</script>
+</div>
