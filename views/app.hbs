@@ -31,7 +31,7 @@
 			</section>
 			</form>
 			<section>
-				<h2 class="expense">  &#x20B9; 75000</h2>
+				<h2 class="expense js-expense">  &#x20B9; 75000</h2>
 			</section>
 		</div><!-- /container -->
 		<script src="/jquery-2.2.0.min.js"></script>
@@ -47,7 +47,7 @@
 
 				function change(){
 					$.post('/app', $('form').serialize(), function(response){
-						console.log(response)
+						$('.js-expense').text('\u20B9 ' + response.expense);
 					})
 				}
 
