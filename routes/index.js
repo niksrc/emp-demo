@@ -83,7 +83,7 @@ router.post('/app', function(req, res, next) {
 	var month = req.body.month;
 
 	expense.get(userid, 'infinitegarg@gmail.com', month, function(resp){
-		res.send(resp);
+		res.send({expense: resp});
 	});
 });
 
