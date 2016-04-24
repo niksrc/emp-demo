@@ -2,6 +2,7 @@ var express = require('express');
 var ms = require('time-ago')();
 var router = express.Router();
 var ctx = require('../lib/ctxapi');
+var expense = require('../lib/expense');
 var callback_url = 'http://127.0.0.1:3000'
 
 /* GET home page. */
@@ -76,5 +77,17 @@ router.get('/app', function(req, res, next) {
 		res.render('app', { users: response.body, title: 'Expense App' });
 	});
 });
+
+router.post('/app', function(req, res, next) {
+	var userid = req.body.userid;
+	var month = req.body.month;
+
+	expense.get(userid, 'infinitegarg@gmail.com', month, function(resp){
+		console.log(response);
+	});
+
+	res.end('');
+});
+
 
 module.exports = router;

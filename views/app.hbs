@@ -10,36 +10,50 @@
 			<header class="codrops-header">
 				<h1><span>A demo</span>Expense App</h1>
 			</header>
+			<form>
 			<section>
-				<select class="cs-select cs-skin-elastic">
+				<select name="userid" class="cs-select cs-skin-elastic">
 					<option value="" disabled selected>Select an Email</option>
 					{{#each users}}
-					<option value="{{email_addresses}}" data-class="flag-india">{{first_name}} {{last_name}}</option>
+					<option value="{{id}}" data-class="flag-india">{{first_name}} {{last_name}}</option>
 					{{/each}}
 				</select>
 			</section>
 			<section>
-				<select class="cs-select cs-skin-elastic">
-					<option value="" disabled selected>Select a Month</option>
-					<option value="Fed" data-class="flag-india"> February </option>
-					<option value="Mar" data-class="flag-india"> March </option>
-					<option value="April" data-class="flag-india"> April </option>
-					<option value="May" data-class="flag-india"> May </option>
-					<option value="Jun" data-class="flag-india"> June </option>
+				<select name="month" class="cs-select cs-skin-elastic">
+					<option value="1" data-class="flag-india" selected> January </option>
+					<option value="2" data-class="flag-india"> February </option>
+					<option value="3" data-class="flag-india"> March </option>
+					<option value="4" data-class="flag-india"> April </option>
+					<option value="5" data-class="flag-india"> May </option>
+					<option value="6" data-class="flag-india"> June </option>
 				</select>
 			</section>
-
+			</form>
 			<section>
 				<h2 class="expense">  &#x20B9; 75000</h2>
 			</section>
 		</div><!-- /container -->
+		<script src="/jquery-2.2.0.min.js"></script>
 		<script src="js/classie.js"></script>
 		<script src="js/selectFx.js"></script>
 		<script>
-			(function() {
+			$('document').ready(function() {
 				[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
-					new SelectFx(el);
-				} );
-			})();
+					new SelectFx(el, {
+						onChange: change
+					});
+				});
+
+				function change(){
+					$.post('/app', $('form').serialize(), function(response){
+						console.log(response)
+					})
+				}
+
+			});
+
+
+
 		</script>
 </div>
