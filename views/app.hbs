@@ -31,7 +31,8 @@
 			</section>
 			</form>
 			<section>
-				<h2 class="expense js-expense">  &#x20B9; 75000</h2>
+				<img class="loader" style="display:none;" src="img/bars.svg" width="40" alt="">
+				<h2 class="expense js-expense"></h2>
 			</section>
 		</div><!-- /container -->
 		<script src="/jquery-2.2.0.min.js"></script>
@@ -46,7 +47,11 @@
 				});
 
 				function change(){
+					$('.loader').show();
+						$('.js-expense').text('');
+
 					$.post('/app', $('form').serialize(), function(response){
+						$('.loader').hide();
 						$('.js-expense').text('\u20B9 ' + response.expense);
 					})
 				}
