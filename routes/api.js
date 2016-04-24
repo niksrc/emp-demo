@@ -14,7 +14,7 @@ router.post('/process', function(req, res, next) {
 				throw err;
 
 			var text = emailtext(email.body);
-			emp.process(email, text.join(), function(result) {
+			emp.process(email.body, text.join(), function(result) {
 				res.send(result);
 			})
 		});
