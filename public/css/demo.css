@@ -22,8 +22,10 @@ body {
 }
 
 .expense {
-	margin-top: 2em;
-	margin-bottom: 2.5em;
+	color: #2c3e50;
+	width: 100%;
+  margin: 2px auto;
+  padding: 0 39%;
 }
 
 a {

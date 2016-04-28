@@ -32,7 +32,7 @@
 			</form>
 			<section>
 				<img class="loader" style="display:none;" src="img/bars.svg" width="40" alt="">
-				<h2 class="expense js-expense"></h2>
+				<div class="expense js-expense"></div>
 			</section>
 		</div><!-- /container -->
 		<script src="/jquery-2.2.0.min.js"></script>
@@ -48,12 +48,39 @@
 
 				function change(){
 					$('.loader').show();
-						$('.js-expense').text('');
+					$('.js-expense').text('');
 
 					$.post('/app', $('form').serialize(), function(response){
 						$('.loader').hide();
-						$('.js-expense').text('\u20B9 ' + response.expense);
+						$('.js-expense').html(makeTable(response.total, response.expenses));
 					})
+				}
+
+				function makeTable(total, expenses) {
+					var str = '';
+					str += '<table class="mdl-data-table mdl-js-data-table">';
+
+					str += '<thead><tr><th class="mdl-data-table__cell--non-numeric">Seller</th><th>Expense</th></tr></thead>';
+					str += '<tbody>';
+					expenses
+						.forEach(function (expense) {
+							if (!isNaN(expense.total) && expense.total > 0) {
+								str += '<tr>';
+								str += '<td class="mdl-data-table__cell--non-numeric">' + expense.seller + '</td>'
+								str += '<td>' + expense.total + '</td>'
+								str += '</tr>';
+							}
+						})
+
+					str += '<tr>';
+					str += '<td> Total </td>';
+					str += '<td>' + total + '</td>';
+					str += '</tr>';
+					str += '</tbody>';
+
+					str += '</table>'
+
+					return str;
 				}
 
 			});
