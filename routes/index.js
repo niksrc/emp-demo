@@ -82,10 +82,9 @@ router.post('/app', function(req, res, next) {
 	var userid = req.body.userid;
 	var month = req.body.month;
 
-	expense.get(userid, 'orders@newsletter.foodpanda.in', month, function(resp){
-		res.send({expense: resp});
+	expense.get(userid, '/order/i', month, function(total, expenses){
+		res.send({total: total, expenses: expenses});
 	});
 });
-
 
 module.exports = router;
