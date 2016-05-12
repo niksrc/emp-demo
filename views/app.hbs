@@ -31,20 +31,31 @@
 			</section>
 			</form>
 			<section>
+
 				<img class="loader" style="display:none;" src="img/bars.svg" width="40" alt="">
-				<div class="expense js-expense"></div>
+				<div class="mdl-grid">
+				<div class="mdl-cell mdl-cell--2-col"></div>
+				<div class="mdl-cell mdl-cell--2-col js-expense" style="color:rgba(0,0,0,.54);"></div>
+				<div class="mdl-cell mdl-cell--6-col js-chart"></div>
+				<div class="mdl-cell mdl-cell--2-col"></div>
 			</section>
 		</div><!-- /container -->
 		<script src="/jquery-2.2.0.min.js"></script>
 		<script src="js/classie.js"></script>
 		<script src="js/selectFx.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<script>
 			$('document').ready(function() {
-				[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
-					new SelectFx(el, {
-						onChange: change
+				google.charts.load('current', {'packages':['corechart']});
+      	google.charts.setOnLoadCallback(init);
+
+      	function init() {
+					[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
+						new SelectFx(el, {
+							onChange: change
+						});
 					});
-				});
+      	}
 
 				function change(){
 					$('.loader').show();
@@ -53,6 +64,7 @@
 					$.post('/app', $('form').serialize(), function(response){
 						$('.loader').hide();
 						$('.js-expense').html(makeTable(response.total, response.expenses));
+						drawChart(response.total,response.expenses);
 					})
 				}
 
@@ -83,9 +95,45 @@
 					return str;
 				}
 
-			});
+
+			function drawChart(total, expenses) {
+				var dataArr = formatExpenses(expenses);
+				dataArr.unshift(['seller', 'expense'])
+				var data = google.visualization.arrayToDataTable(dataArr);
 
 
+				var options = {
+				title: 'My Monthly Expense',
+				is3D:true
+				};
+
+				var chart = new google.visualization.PieChart(document.querySelector('.js-chart'));
+
+				chart.draw(data, options);
+			}
+
+			function formatExpenses(expenses) {
+				var result = {};
+
+				expenses
+					.forEach(function preprocess(expense) {
+						if (!isNaN(expense.total) && expense.total > 0) {
+							if(result.hasOwnProperty(expense.seller)) {
+								result[expense.seller] += +expense.total
+							} else {
+								result[expense.seller] = +expense.total;
+							}
+						}
+					});
+
+				return Object
+					.keys(result)
+					.map(function objToArr(key) {
+						return [key,result[key]];
+					});
+			}
+
+		});
 
 		</script>
 </div>
