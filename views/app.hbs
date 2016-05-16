@@ -34,10 +34,10 @@
 
 				<img class="loader" style="display:none;" src="img/bars.svg" width="40" alt="">
 				<div class="mdl-grid">
-				<div class="mdl-cell mdl-cell--2-col"></div>
-				<div class="mdl-cell mdl-cell--2-col js-expense" style="color:rgba(0,0,0,.54);"></div>
+				<div class="mdl-cell mdl-cell--1-col"></div>
+				<div class="mdl-cell mdl-cell--4-col js-expense" style="color:rgba(0,0,0,.54);"></div>
 				<div class="mdl-cell mdl-cell--6-col js-chart"></div>
-				<div class="mdl-cell mdl-cell--2-col"></div>
+				<div class="mdl-cell mdl-cell--1-col"></div>
 			</section>
 		</div><!-- /container -->
 		<script src="/jquery-2.2.0.min.js"></script>
@@ -59,7 +59,8 @@
 
 				function change(){
 					$('.loader').show();
-					$('.js-expense').text('');
+					$('.js-expense').html('');
+					$('.js-chart').html('');
 
 					$.post('/app', $('form').serialize(), function(response){
 						$('.loader').hide();
